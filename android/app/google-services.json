@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "278047431588",
+    "project_id": "projecttest-f77b1",
+    "storage_bucket": "projecttest-f77b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278047431588:android:5d85316db72a4981e73f31",
+        "android_client_info": {
+          "package_name": "WasteWizard.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278047431588-qcnf7fqviaovok50tf0823cv3u1m59mv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "WasteWizard.myapp",
+            "certificate_hash": "11166f88556a351e41fa218ddc97a4c530d634c2"
+          }
+        },
+        {
+          "client_id": "278047431588-hn3e25fcac4sa35426osd1phobep97e5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE6PVgtQgfsio6SngPKs4oHnypQtp6-_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278047431588-hn3e25fcac4sa35426osd1phobep97e5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
