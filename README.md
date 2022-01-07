@@ -1,4 +1,4 @@
-# myapp
+# WasteWizard++
 
 A new Flutter project.
 
