@@ -6,6 +6,7 @@ import 'package:myapp/services/models.dart';
 import 'package:myapp/shared/bottom_nav.dart';
 import 'package:myapp/shared/loading.dart';
 import 'package:myapp/shared/error.dart';
+import 'package:myapp/topics/scanHistoryFull.dart';
 import 'package:myapp/topics/topic_item.dart';
 import 'package:myapp/topics/tool_item.dart';
 import 'package:myapp/topics/drawer.dart';
@@ -41,9 +42,15 @@ final List<Widget> imageSliders = imgList
         ))
     .toList();
 
-class TopicsScreen extends StatelessWidget {
+class TopicsScreen extends StatefulWidget {
   const TopicsScreen({Key? key}) : super(key: key);
 
+  @override
+  State<TopicsScreen> createState() => _TopicsScreenState();
+}
+
+class _TopicsScreenState extends State<TopicsScreen> {
+  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Topic>>(
@@ -57,31 +64,90 @@ class TopicsScreen extends StatelessWidget {
           );
         } else if (snapshot.hasData) {
           var topics = snapshot.data!;
-
+          final screen = [
+            MainHome(topics: topics),
+            const ScanHistoryFull(),
+          ];
           return Scaffold(
-            backgroundColor: const Color(0xFFF9FCFF),
-            drawer: const TopicDrawer(),
-            // ignore: prefer_const_literals_to_create_immutables
-            body: CustomScrollView(slivers: <Widget>[
-              const TopBar(),
-              const Tools(),
-              ScanHistory(topics: topics),
-            ]),
+              backgroundColor: const Color(0xFFF9FCFF),
+              drawer: const TopicDrawer(),
+              body: screen[_selectedIndex],
 
-            ///Floating Navbar
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: FloatingActionButton(
-              child: const Icon(Icons.camera_alt_rounded),
-              onPressed: () {},
-              backgroundColor: const Color(0xFF84C879),
-            ),
-            bottomNavigationBar: const BottomNavBar(),
-          );
+              ///Floating Navbar
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: FloatingActionButton(
+                child: const Icon(Icons.camera_alt_rounded),
+                onPressed: () {},
+                backgroundColor: const Color(0xFF84C879),
+              ),
+              bottomNavigationBar: BottomAppBar(
+                shape: const AutomaticNotchedShape(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25),
+                      ),
+                    ),
+                    StadiumBorder()),
+                notchMargin: 5,
+                color: Colors.white,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      width: 70.0,
+                    ),
+                    IconBottomButton(
+                        icon: Icons.home,
+                        selected: _selectedIndex == 0,
+                        onPressed: () {
+                          setState(() {
+                            _selectedIndex = 0;
+                          });
+                        }),
+                    const SizedBox(
+                      width: 150.0,
+                    ),
+                    IconBottomButton(
+                        icon: Icons.document_scanner,
+                        selected: _selectedIndex == 1,
+                        onPressed: () {
+                          setState(() {
+                            _selectedIndex = 1;
+                          });
+                        }),
+                    const SizedBox(
+                      width: 70.0,
+                    ),
+                  ],
+                ),
+              ));
         } else {
           return const Text('No topics in Firestore. Check Database');
         }
       },
+    );
+  }
+}
+
+class MainHome extends StatelessWidget {
+  const MainHome({
+    Key? key,
+    required this.topics,
+  }) : super(key: key);
+
+  final List<Topic> topics;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: <Widget>[
+        const TopBar(),
+        const Tools(),
+        ScanHistory(topics: topics),
+      ],
     );
   }
 }

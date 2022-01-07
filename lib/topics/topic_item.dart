@@ -123,15 +123,6 @@ class TopicScreen extends StatelessWidget {
               height: 2, fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ]),
-
-      ///Floating Navbar
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.camera_alt_rounded),
-        onPressed: () {},
-        backgroundColor: const Color(0xFF84C879),
-      ),
-      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }
