@@ -1,6 +1,7 @@
 import 'package:myapp/about/about.dart';
 import 'package:myapp/profile/profile.dart';
 import 'package:myapp/login/login.dart';
+import 'package:myapp/sideFunctions/calendar.dart';
 import 'package:myapp/sideFunctions/depot_map.dart';
 import 'package:myapp/topics/topics.dart';
 import 'package:myapp/topics/scanHistoryFull.dart';
@@ -14,4 +15,5 @@ var appRoutes = {
   '/about': (context) => const AboutScreen(),
   '/scanHistory': (context) => const ScanHistoryFull(),
   '/Local Waste Depots': (context) => const MapScreen(),
+  '/Pickup Schedule': (context) => const Calendar(),
 };
