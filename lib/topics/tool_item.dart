@@ -10,7 +10,7 @@ class ToolItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/profile');
+        Navigator.pushNamed(context, '/$tool');
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
