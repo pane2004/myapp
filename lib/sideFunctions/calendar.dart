@@ -13,18 +13,30 @@ class _CalendarState extends State<Calendar> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Peel Waste Calendar"),
+          title: const Text("Peel Waste Pickup Calendar"),
           backgroundColor: const Color(0xFF84C879),
           shape: const ContinuousRectangleBorder(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(50),
                   bottomRight: Radius.circular(50))),
         ),
-        body: SfCalendar(
-          view: CalendarView.month,
-          firstDayOfWeek: 7,
-          monthViewSettings: const MonthViewSettings(showAgenda: true),
-          dataSource: MeetingDataSource(getAppointments()),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: SfCalendar(
+            headerStyle: const CalendarHeaderStyle(
+                textAlign: TextAlign.center,
+                textStyle: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                )),
+            view: CalendarView.month,
+            firstDayOfWeek: 7,
+            monthViewSettings: const MonthViewSettings(
+              showAgenda: true,
+              agendaItemHeight: 50,
+            ),
+            dataSource: MeetingDataSource(getAppointments()),
+          ),
         ));
   }
 }
