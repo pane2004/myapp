@@ -70,7 +70,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
           ];
           return Scaffold(
               backgroundColor: const Color(0xFFF9FCFF),
-              drawer: const TopicDrawer(),
+              drawer: nameFetch(),
               body: screen[_selectedIndex],
 
               ///Floating Navbar
@@ -129,6 +129,25 @@ class _TopicsScreenState extends State<TopicsScreen> {
         }
       },
     );
+  }
+
+  FutureBuilder<String> nameFetch() {
+    return FutureBuilder<String>(
+        future: FirestoreService().getName(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingScreen();
+          } else if (snapshot.hasError) {
+            return Center(
+              child: ErrorMessage(message: snapshot.error.toString()),
+            );
+          } else if (snapshot.hasData) {
+            var name = snapshot.data!;
+            return TopicDrawer(name: name);
+          } else {
+            return const Text('No topics in Firestore. Check Database');
+          }
+        });
   }
 }
 

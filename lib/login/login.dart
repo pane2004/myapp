@@ -1,8 +1,11 @@
 // ignore_for_file: unnecessary_const
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myapp/services/auth.dart';
+import 'package:myapp/services/firestore.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -95,12 +98,13 @@ class LoginScreen extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
+  final firestoreInstance = FirebaseFirestore.instance;
   final Color color;
   final IconData icon;
   final String text;
   final Function loginMethod;
 
-  const LoginButton(
+  LoginButton(
       {Key? key,
       required this.text,
       required this.icon,
@@ -125,7 +129,9 @@ class LoginButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(12), // <-- Radius
             ),
           ),
-          onPressed: () => loginMethod(),
+          onPressed: () {
+            loginMethod();
+          },
           label: Text(text, textAlign: TextAlign.center),
         ));
   }

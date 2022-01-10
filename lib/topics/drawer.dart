@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -7,7 +9,8 @@ import 'package:myapp/quiz/quiz.dart';
 import 'package:myapp/services/models.dart';
 
 class TopicDrawer extends StatelessWidget {
-  const TopicDrawer({Key? key}) : super(key: key);
+  final String name;
+  const TopicDrawer({Key? key, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,19 +18,19 @@ class TopicDrawer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: const [
+        children: [
           Padding(
             padding: EdgeInsets.only(top: 30, left: 20),
             child: CircleAvatar(
               backgroundColor: Color(0xFF84C879),
-              child: Text('JT'),
+              child: Text('WW++'),
               radius: 30,
             ),
           ),
           Padding(
             padding: EdgeInsets.only(top: 15, left: 20),
             child: Text(
-              "James Thompson",
+              name,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF84C879),

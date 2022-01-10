@@ -1,20 +1,52 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:convert';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:myapp/services/firestore.dart';
 
 class AuthService {
   final userStream = FirebaseAuth.instance.authStateChanges();
   final user = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
 
   ///Anonymous Firebase Login
   Future<void> anonLogin() async {
+    DateTime today = DateTime.now();
+    String date = today.toString().substring(0, 10);
     try {
       await FirebaseAuth.instance.signInAnonymously();
     } on FirebaseAuthException catch (e) {
       //Handle Error
+    } finally {
+      var newFirebaseUser = FirebaseAuth.instance.currentUser;
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(newFirebaseUser?.uid)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+        } else {
+          firestoreInstance.collection("users").doc(newFirebaseUser?.uid).set({
+            "displayName": "Guest User",
+            "carbon": 0,
+            "scanCount": 0,
+          }).then((_) {
+            firestoreInstance
+                .collection('users')
+                .doc(newFirebaseUser?.uid)
+                .collection('scans')
+                .add({
+              "img":
+                  "https://firebasestorage.googleapis.com/v0/b/projecttest-f77b1.appspot.com/o/icon%20(1).png?alt=media&token=4c6feb3d-a2d2-4b05-8326-cc013a6544f7",
+              "classification": "My First Scan",
+              "time": date
+            });
+          });
+        }
+      });
     }
   }
 
@@ -39,6 +71,23 @@ class AuthService {
       await FirebaseAuth.instance.signInWithCredential(authCredential);
     } on FirebaseAuthException catch (e) {
       //Handle Error
+    } finally {
+      var newFirebaseUser = FirebaseAuth.instance.currentUser;
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(newFirebaseUser?.uid)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+        } else {
+          firestoreInstance.collection("users").doc(newFirebaseUser?.uid).set({
+            "displayName": "Guest User",
+            "carbon": 0,
+            "scanCount": 0,
+            "Location": "Greater Toronto Area"
+          });
+        }
+      });
     }
   }
 
