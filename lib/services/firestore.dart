@@ -9,11 +9,25 @@ class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final firebaseUser = FirebaseAuth.instance.currentUser;
 
-  ///Reads from user document
+  ///Reads name from user document
   Future<String> getName() async {
     var ref = _db.collection('users').doc(firebaseUser!.uid);
     var snapshot = await ref.get();
     return snapshot.data()!["displayName"];
+  }
+
+  ///Reads scans from user document
+  Future<String> scanCount() async {
+    var ref = _db.collection('users').doc(firebaseUser!.uid);
+    var snapshot = await ref.get();
+    return snapshot.data()!["scanCount"].toString();
+  }
+
+  ///Reads joinDate from user document
+  Future<String> joinDate() async {
+    var ref = _db.collection('users').doc(firebaseUser!.uid);
+    var snapshot = await ref.get();
+    return snapshot.data()!["joinDate"];
   }
 
   ///Updates Users Display Name

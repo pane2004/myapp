@@ -33,6 +33,7 @@ class AuthService {
             "displayName": "Guest User",
             "carbon": 0,
             "scanCount": 0,
+            "joinDate": date,
           }).then((_) {
             firestoreInstance
                 .collection('users')

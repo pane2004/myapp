@@ -1,4 +1,6 @@
 import 'package:myapp/about/about.dart';
+import 'package:myapp/drawerScreens/notifications.dart';
+import 'package:myapp/drawerScreens/statistics.dart';
 import 'package:myapp/profile/profile.dart';
 import 'package:myapp/login/login.dart';
 import 'package:myapp/sideFunctions/calendar.dart';
@@ -18,4 +20,6 @@ var appRoutes = {
   '/Local Waste Depots': (context) => const MapScreen(),
   '/Pickup Schedule': (context) => const Calendar(),
   '/settings': (context) => const SettingsScreen(),
+  '/statistics': (context) => const StatScreen(),
+  '/noti': (context) => const NotificationScreen(),
 };

@@ -27,6 +27,7 @@ dependencies:
   carousel_slider: 4.0.0
   google_maps_flutter: ^2.1.1
   syncfusion_flutter_calendar: ^19.4.41
+  avatar_view: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -47,3 +48,4 @@ flutter:
     - assets/topics/
     - assets/congrats.gif
     - assets/logolong.png
+    - assets/wizard.png

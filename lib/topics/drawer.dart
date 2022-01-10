@@ -81,17 +81,17 @@ class _TopicDrawerState extends State<TopicDrawer> {
             SideBar(
               title: "Statistics",
               icon: Icons.query_stats,
-              page: '/profile',
+              page: '/statistics',
             ),
             SideBar(
               title: "Notifications",
               icon: Icons.notifications_active,
-              page: '/profile',
+              page: '/noti',
             ),
             SideBar(
               title: "History",
               icon: Icons.history,
-              page: '/profile',
+              page: '/scanHistory',
             ),
             Divider(
               indent: 20,
@@ -152,18 +152,21 @@ class _TopicDrawerState extends State<TopicDrawer> {
             ),
             actions: [
               TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(controller.text);
-                    Navigator.pushNamed(context, '/');
-                  },
-                  child: Text(
-                    "Confirm",
-                    style: TextStyle(
-                      color: const Color(0xFF84C879),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ))
+                onPressed: () {
+                  Navigator.of(context).pop(controller.text);
+                  Navigator.pushNamed(context, '/');
+                },
+                child: Text(
+                  "Confirm",
+                  style: TextStyle(
+                    color: const Color(0xFF84C879),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                style:
+                    TextButton.styleFrom(splashFactory: NoSplash.splashFactory),
+              )
             ],
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
