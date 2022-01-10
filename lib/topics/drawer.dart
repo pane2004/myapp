@@ -1,104 +1,195 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:myapp/services/firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/quiz/quiz.dart';
 import 'package:myapp/services/models.dart';
 
-class TopicDrawer extends StatelessWidget {
+class TopicDrawer extends StatefulWidget {
   final String name;
   const TopicDrawer({Key? key, required this.name}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 30, left: 20),
-            child: CircleAvatar(
-              backgroundColor: Color(0xFF84C879),
-              child: Text('WW++'),
-              radius: 30,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 15, left: 20),
-            child: Text(
-              name,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF84C879),
-                fontSize: 24,
+  State<TopicDrawer> createState() => _TopicDrawerState();
+}
+
+class _TopicDrawerState extends State<TopicDrawer> {
+  late TextEditingController controller;
+  String newName = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Drawer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+                padding: EdgeInsets.only(top: 30, left: 20),
+                child: Image.asset(
+                  'assets/logolong.png',
+                  width: 250,
+                )),
+            Padding(
+              padding: EdgeInsets.only(top: 15, left: 20),
+              child: Row(
+                children: [
+                  Text(
+                    widget.name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF84C879),
+                      fontSize: 24,
+                    ),
+                  ),
+                  IconButton(
+                    color: Color(0xFF84C879),
+                    icon: const Icon(Icons.edit),
+                    onPressed: () async {
+                      final newName = await openPopup();
+                      if (newName == null || newName.isEmpty) return;
+
+                      setState(() => this.newName = newName);
+                      FirestoreService().changeName(newName);
+                    },
+                  )
+                ],
               ),
             ),
-          ),
-          Divider(
-            indent: 20,
-            endIndent: 20,
-            thickness: 1.5,
-            height: 60,
-          ),
-          SideBar(
-            title: "Statistics",
-            icon: Icons.query_stats,
-          ),
-          SideBar(
-            title: "Notifications",
-            icon: Icons.notifications_active,
-          ),
-          SideBar(
-            title: "History",
-            icon: Icons.history,
-          ),
-          Divider(
-            indent: 20,
-            endIndent: 20,
-            thickness: 1.5,
-            height: 60,
-          ),
-          SideBar(
-            title: "Settings",
-            icon: Icons.settings,
-          ),
-          SideBar(
-            title: "Privacy Policy",
-            icon: Icons.privacy_tip,
-          ),
-          SideBar(
-            title: "Help Centre",
-            icon: Icons.help,
-          ),
-          SideBar(
-            title: "Sign Out",
-            icon: Icons.logout,
-          ),
-        ],
-      ),
-    );
-  }
+            Divider(
+              indent: 20,
+              endIndent: 20,
+              thickness: 1.5,
+              height: 60,
+            ),
+            SideBar(
+              title: "Statistics",
+              icon: Icons.query_stats,
+              page: '/profile',
+            ),
+            SideBar(
+              title: "Notifications",
+              icon: Icons.notifications_active,
+              page: '/profile',
+            ),
+            SideBar(
+              title: "History",
+              icon: Icons.history,
+              page: '/profile',
+            ),
+            Divider(
+              indent: 20,
+              endIndent: 20,
+              thickness: 1.5,
+              height: 60,
+            ),
+            SideBar(
+              title: "Settings",
+              icon: Icons.settings,
+              page: '/settings',
+            ),
+            SideBar(
+              title: "Privacy Policy",
+              icon: Icons.privacy_tip,
+              page: '/profile',
+            ),
+            SideBar(
+              title: "Help Centre",
+              icon: Icons.help,
+              page: '/profile',
+            ),
+            SideBar(
+              title: "Sign Out",
+              icon: Icons.logout,
+              page: '/profile',
+            ),
+          ],
+        ),
+      );
+
+  Future<String?> openPopup() => showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text(
+              "Change Display Name",
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 18,
+              ),
+            ),
+            content: TextField(
+              cursorColor: const Color(0xFF84C879),
+              autofocus: true,
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: "Enter your name",
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: const Color(0xFF84C879)),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: const Color(0xFF84C879)),
+                ),
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: const Color(0xFF84C879)),
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(controller.text);
+                    Navigator.pushNamed(context, '/');
+                  },
+                  child: Text(
+                    "Confirm",
+                    style: TextStyle(
+                      color: const Color(0xFF84C879),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ))
+            ],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
+            ),
+          ));
 }
 
 class SideBar extends StatelessWidget {
   final String title;
   final IconData icon;
+  final String page;
 
   const SideBar({
     Key? key,
     required this.title,
     required this.icon,
+    required this.page,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/profile');
+        Navigator.pushNamed(context, page);
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 20),
@@ -111,97 +202,3 @@ class SideBar extends StatelessWidget {
     );
   }
 }
-
-// class TopicDrawer extends StatelessWidget {
-//   final List<Topic> topics;
-//   const TopicDrawer({Key? key, required this.topics}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Drawer(
-//       child: ListView.separated(
-//           shrinkWrap: true,
-//           itemCount: topics.length,
-//           itemBuilder: (BuildContext context, int idx) {
-//             Topic topic = topics[idx];
-//             return Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Padding(
-//                   padding: const EdgeInsets.only(top: 10, left: 10),
-//                   child: Text(
-//                     topic.title,
-//                     // textAlign: TextAlign.left,
-//                     style: const TextStyle(
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.bold,
-//                       color: Colors.white70,
-//                     ),
-//                   ),
-//                 ),
-//                 QuizList(topic: topic)
-//               ],
-//             );
-//           },
-//           separatorBuilder: (BuildContext context, int idx) => const Divider()),
-//     );
-//   }
-// }
-
-// class QuizList extends StatelessWidget {
-//   final Topic topic;
-//   const QuizList({Key? key, required this.topic}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: topic.quizzes.map(
-//         (quiz) {
-//           return Card(
-//             shape:
-//                 const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-//             elevation: 4,
-//             margin: const EdgeInsets.all(4),
-//             child: InkWell(
-//               onTap: () {},
-//               child: Container(
-//                 padding: const EdgeInsets.all(8),
-//                 child: ListTile(
-//                   title: Text(
-//                     quiz.title,
-//                     style: Theme.of(context).textTheme.headline5,
-//                   ),
-//                   subtitle: Text(
-//                     quiz.description,
-//                     overflow: TextOverflow.fade,
-//                     style: Theme.of(context).textTheme.subtitle2,
-//                   ),
-//                   leading: QuizBadge(topic: topic, quizId: quiz.id),
-//                 ),
-//               ),
-//             ),
-//           );
-//         },
-//       ).toList(),
-//     );
-//   }
-// }
-
-// class QuizBadge extends StatelessWidget {
-//   final String quizId;
-//   final Topic topic;
-
-//   const QuizBadge({Key? key, required this.quizId, required this.topic})
-//       : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     Report report = Provider.of<Report>(context);
-//     List completed = report.topics[topic.id] ?? [];
-//     if (completed.contains(quizId)) {
-//       return const Icon(FontAwesomeIcons.checkDouble, color: Colors.green);
-//     } else {
-//       return const Icon(FontAwesomeIcons.solidCircle, color: Colors.grey);
-//     }
-//   }
-// }
