@@ -64,6 +64,16 @@ class FirestoreService {
     return topics.toList();
   }
 
+  /// Reads all documments from the topics collection
+  Future<List<Scan>> getScans() async {
+    var ref =
+        _db.collection('users').doc(firebaseUser!.uid).collection('scans');
+    var snapshot = await ref.get();
+    var data = snapshot.docs.map((s) => s.data());
+    var scans = data.map((d) => Scan.fromJson(d));
+    return scans.toList();
+  }
+
   /// Retrieves a single quiz document
   Future<Quiz> getQuiz(String quizId) async {
     var ref = _db.collection('quizzes').doc(quizId);

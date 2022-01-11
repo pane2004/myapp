@@ -53,8 +53,8 @@ class _TopicsScreenState extends State<TopicsScreen> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Topic>>(
-      future: FirestoreService().getTopics(),
+    return FutureBuilder<List<Scan>>(
+      future: FirestoreService().getScans(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const LoadingScreen();
@@ -63,9 +63,9 @@ class _TopicsScreenState extends State<TopicsScreen> {
             child: ErrorMessage(message: snapshot.error.toString()),
           );
         } else if (snapshot.hasData) {
-          var topics = snapshot.data!;
+          var scans = snapshot.data!;
           final screen = [
-            MainHome(topics: topics),
+            MainHome(scans: scans),
             const ScanHistoryFull(),
           ];
           return Scaffold(
@@ -154,10 +154,10 @@ class _TopicsScreenState extends State<TopicsScreen> {
 class MainHome extends StatelessWidget {
   const MainHome({
     Key? key,
-    required this.topics,
+    required this.scans,
   }) : super(key: key);
 
-  final List<Topic> topics;
+  final List<Scan> scans;
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +165,7 @@ class MainHome extends StatelessWidget {
       slivers: <Widget>[
         const TopBar(),
         const Tools(),
-        ScanHistory(topics: topics),
+        ScanHistory(scans: scans),
       ],
     );
   }
@@ -174,10 +174,10 @@ class MainHome extends StatelessWidget {
 class ScanHistory extends StatelessWidget {
   const ScanHistory({
     Key? key,
-    required this.topics,
+    required this.scans,
   }) : super(key: key);
 
-  final List<Topic> topics;
+  final List<Scan> scans;
 
   @override
   Widget build(BuildContext context) {
@@ -200,9 +200,9 @@ class ScanHistory extends StatelessWidget {
         primary: false,
         padding: const EdgeInsets.all(20),
         crossAxisCount: 1,
-        children: topics
-            .map((topic) => TopicItem(
-                  topic: topic,
+        children: scans
+            .map((scan) => TopicItem(
+                  scan: scan,
                 ))
             .toList(),
       ),

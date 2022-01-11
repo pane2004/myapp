@@ -71,6 +71,19 @@ Map<String, dynamic> _$TopicToJson(Topic instance) => <String, dynamic>{
       'quizzes': instance.quizzes,
     };
 
+Scan _$ScanFromJson(Map<String, dynamic> json) => Scan(
+      classification: json['classification'] as String? ?? '',
+      time: json['time'] as String? ?? '',
+      img: json['img'] as String? ??
+          'https://stickerly.pstatic.net/sticker_pack/13279e882d3a25af/KXTZ1R/2/39a69c85-b054-4d3c-9cdb-cf450cea8597-023.png',
+    );
+
+Map<String, dynamic> _$ScanToJson(Scan instance) => <String, dynamic>{
+      'classification': instance.classification,
+      'time': instance.time,
+      'img': instance.img,
+    };
+
 Report _$ReportFromJson(Map<String, dynamic> json) => Report(
       uid: json['uid'] as String? ?? '',
       topics: json['topics'] as Map<String, dynamic>? ?? const {},

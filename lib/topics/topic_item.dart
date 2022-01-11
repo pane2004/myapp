@@ -5,13 +5,13 @@ import 'package:myapp/services/models.dart';
 import 'package:myapp/shared/bottom_nav.dart';
 
 class TopicItem extends StatelessWidget {
-  final Topic topic;
-  const TopicItem({Key? key, required this.topic}) : super(key: key);
+  final Scan scan;
+  const TopicItem({Key? key, required this.scan}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: topic.img,
+      tag: scan.img,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
@@ -20,7 +20,7 @@ class TopicItem extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (BuildContext context) => TopicScreen(topic: topic),
+                builder: (BuildContext context) => TopicScreen(scan: scan),
               ),
             );
           },
@@ -37,8 +37,8 @@ class TopicItem extends StatelessWidget {
                     aspectRatio: 1,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        'assets/covers/${topic.img}',
+                      child: Image.network(
+                        scan.img,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -52,7 +52,7 @@ class TopicItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      topic.title,
+                      scan.classification,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -60,9 +60,9 @@ class TopicItem extends StatelessWidget {
                       overflow: TextOverflow.fade,
                       softWrap: false,
                     ),
-                    const Text(
-                      "2020-21-23",
-                      style: TextStyle(color: Color(0xFFC5D0DB)),
+                    Text(
+                      scan.time,
+                      style: const TextStyle(color: Color(0xFFC5D0DB)),
                       overflow: TextOverflow.fade,
                       softWrap: false,
                     ),
@@ -100,25 +100,25 @@ class TopicItem extends StatelessWidget {
 }
 
 class TopicScreen extends StatelessWidget {
-  final Topic topic;
+  final Scan scan;
 
-  const TopicScreen({Key? key, required this.topic}) : super(key: key);
+  const TopicScreen({Key? key, required this.scan}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF84C879),
-        title: Text(topic.title),
+        title: Text(scan.classification),
       ),
       body: ListView(children: [
         Hero(
-          tag: topic.img,
-          child: Image.asset('assets/covers/${topic.img}',
-              width: MediaQuery.of(context).size.width),
+          tag: scan.img,
+          child:
+              Image.network(scan.img, width: MediaQuery.of(context).size.width),
         ),
         Text(
-          topic.title,
+          scan.classification,
           style: const TextStyle(
               height: 2, fontSize: 20, fontWeight: FontWeight.bold),
         ),

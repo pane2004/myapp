@@ -61,6 +61,23 @@ class Topic {
 }
 
 @JsonSerializable()
+class Scan {
+  final String classification;
+  final String time;
+  final String img;
+
+  Scan({
+    this.classification = '',
+    this.time = '',
+    this.img =
+        'https://stickerly.pstatic.net/sticker_pack/13279e882d3a25af/KXTZ1R/2/39a69c85-b054-4d3c-9cdb-cf450cea8597-023.png',
+  });
+
+  factory Scan.fromJson(Map<String, dynamic> json) => _$ScanFromJson(json);
+  Map<String, dynamic> toJson() => _$ScanToJson(this);
+}
+
+@JsonSerializable()
 class Report {
   String uid;
   int total;

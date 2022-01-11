@@ -15,8 +15,8 @@ class ScanHistoryFull extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Topic>>(
-        future: FirestoreService().getTopics(),
+    return FutureBuilder<List<Scan>>(
+        future: FirestoreService().getScans(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const LoadingScreen();
@@ -25,7 +25,7 @@ class ScanHistoryFull extends StatelessWidget {
               child: ErrorMessage(message: snapshot.error.toString()),
             );
           } else if (snapshot.hasData) {
-            var topics = snapshot.data!;
+            var scans = snapshot.data!;
             return Scaffold(
               appBar: AppBar(
                 centerTitle: true,
@@ -36,7 +36,7 @@ class ScanHistoryFull extends StatelessWidget {
                         bottomLeft: Radius.circular(50),
                         bottomRight: Radius.circular(50))),
               ),
-              body: SingleChildScrollView(child: ScanHistory(topics: topics)),
+              body: SingleChildScrollView(child: ScanHistory(scans: scans)),
             );
           } else {
             return const Text('No topics in Firestore. Check Database');
@@ -48,10 +48,10 @@ class ScanHistoryFull extends StatelessWidget {
 class ScanHistory extends StatelessWidget {
   const ScanHistory({
     Key? key,
-    required this.topics,
+    required this.scans,
   }) : super(key: key);
 
-  final List<Topic> topics;
+  final List<Scan> scans;
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +73,9 @@ class ScanHistory extends StatelessWidget {
         primary: false,
         padding: const EdgeInsets.all(20),
         crossAxisCount: 1,
-        children: topics
-            .map((topic) => TopicItem(
-                  topic: topic,
+        children: scans
+            .map((scan) => TopicItem(
+                  scan: scan,
                 ))
             .toList(),
       ),
