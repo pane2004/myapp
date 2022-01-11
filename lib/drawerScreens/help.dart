@@ -26,9 +26,22 @@ class HelpScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Qa(question: '''Q: Where can I find more info about recycling?
-''', answer: '''A: There are articles about recycling in our app.
+                Center(
+                  child: Image.asset(
+                    'assets/helpwizard.png',
+                    width: 250,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Qa(
+                      question:
+                          '''Q: Where can I find more info about recycling?
+''',
+                      answer:
+                          '''A: There are articles about recycling in our app.
 '''),
+                ),
                 Qa(
                     question:
                         '''Q: How come I can't find a waste depot in my area?
