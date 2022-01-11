@@ -1,5 +1,7 @@
 import 'package:myapp/about/about.dart';
+import 'package:myapp/drawerScreens/help.dart';
 import 'package:myapp/drawerScreens/notifications.dart';
+import 'package:myapp/drawerScreens/privacy.dart';
 import 'package:myapp/drawerScreens/statistics.dart';
 import 'package:myapp/profile/profile.dart';
 import 'package:myapp/login/login.dart';
@@ -22,4 +24,6 @@ var appRoutes = {
   '/settings': (context) => const SettingsScreen(),
   '/statistics': (context) => const StatScreen(),
   '/noti': (context) => const NotificationScreen(),
+  '/privacy': (context) => const PrivacyScreen(),
+  '/help': (context) => const HelpScreen(),
 };

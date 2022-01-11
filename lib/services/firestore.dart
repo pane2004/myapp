@@ -30,12 +30,29 @@ class FirestoreService {
     return snapshot.data()!["joinDate"];
   }
 
+  ///Deletes all scan documents from user subcollection
+  Future<void> clearScans() async {
+    var snapshots = await _db
+        .collection('users')
+        .doc(firebaseUser!.uid)
+        .collection('scans')
+        .get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
+  }
+
   ///Updates Users Display Name
   changeName(String name) {
     _db
         .collection('users')
         .doc(firebaseUser!.uid)
         .update({"displayName": name});
+  }
+
+  ///Updates Users Carbon Amount
+  resetCarbon() {
+    _db.collection('users').doc(firebaseUser!.uid).update({"carbon": 0});
   }
 
   /// Reads all documments from the topics collection

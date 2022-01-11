@@ -3,6 +3,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:myapp/services/auth.dart';
 import 'package:myapp/services/firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/quiz/quiz.dart';
@@ -107,18 +108,28 @@ class _TopicDrawerState extends State<TopicDrawer> {
             SideBar(
               title: "Privacy Policy",
               icon: Icons.privacy_tip,
-              page: '/profile',
+              page: '/privacy',
             ),
             SideBar(
               title: "Help Centre",
               icon: Icons.help,
-              page: '/profile',
+              page: '/help',
             ),
-            SideBar(
-              title: "Sign Out",
-              icon: Icons.logout,
-              page: '/profile',
-            ),
+            InkWell(
+              onTap: () async {
+                await AuthService().signOut();
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/', (route) => false);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: ListTile(
+                  title: Text("Sign Out"),
+                  leading: Icon(Icons.logout),
+                  iconColor: const Color(0xFF84C879),
+                ),
+              ),
+            )
           ],
         ),
       );
