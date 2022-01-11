@@ -16,6 +16,13 @@ class FirestoreService {
     return snapshot.data()!["displayName"];
   }
 
+  ///Reads name from user document
+  Future<double> getCarbon() async {
+    var ref = _db.collection('users').doc(firebaseUser!.uid);
+    var snapshot = await ref.get();
+    return snapshot.data()!["carbon"];
+  }
+
   ///Reads scans from user document
   Future<String> scanCount() async {
     var ref = _db.collection('users').doc(firebaseUser!.uid);

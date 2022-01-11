@@ -29,6 +29,7 @@ dependencies:
   syncfusion_flutter_calendar: ^19.4.41
   avatar_view: ^1.0.1
   url_launcher: ^6.0.18
+  syncfusion_flutter_gauges: ^19.4.42
 
 dev_dependencies:
   flutter_test:
@@ -54,3 +55,4 @@ flutter:
     - assets/cover1.jpg
     - assets/cover2.jpg
     - assets/cover3.jpg
+    - assets/encouragewizard.png
