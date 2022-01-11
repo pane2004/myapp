@@ -13,9 +13,9 @@ import 'package:myapp/topics/drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 final List<String> imgList = [
-  "https://i.ibb.co/cJcrhXF/big-o-chart-tutorial-bazar-aymptotic-notations-1.png",
-  "https://i.ibb.co/mvzZBJS/588b4949713ba11c008b4e37.jpg",
-  "https://i.ibb.co/MBnfkjm/thehistoryan.jpg",
+  "assets/cover1.jpg",
+  "assets/cover2.jpg",
+  "assets/cover3.jpg",
 ];
 
 final List<String> toolList = [
@@ -25,21 +25,28 @@ final List<String> toolList = [
 ];
 
 final List<Widget> imageSliders = imgList
-    .map((item) => Container(
-          margin: const EdgeInsets.only(right: 30),
-          child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-              child: Stack(
-                children: <Widget>[
-                  Image.network(
-                    item,
-                    fit: BoxFit.cover,
-                    width: 1000.0,
-                    height: 800,
+    .map((item) => Builder(builder: (context) {
+          return Container(
+            margin: const EdgeInsets.only(right: 30),
+            child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/$item');
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Image.asset(
+                        item,
+                        fit: BoxFit.cover,
+                        width: 1000.0,
+                        height: 800,
+                      ),
+                    ],
                   ),
-                ],
-              )),
-        ))
+                )),
+          );
+        }))
     .toList();
 
 class TopicsScreen extends StatefulWidget {

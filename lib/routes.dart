@@ -1,4 +1,7 @@
 import 'package:myapp/about/about.dart';
+import 'package:myapp/articles/article1.dart';
+import 'package:myapp/articles/article2.dart';
+import 'package:myapp/articles/article3.dart';
 import 'package:myapp/drawerScreens/help.dart';
 import 'package:myapp/drawerScreens/notifications.dart';
 import 'package:myapp/drawerScreens/privacy.dart';
@@ -26,4 +29,7 @@ var appRoutes = {
   '/noti': (context) => const NotificationScreen(),
   '/privacy': (context) => const PrivacyScreen(),
   '/help': (context) => const HelpScreen(),
+  '/assets/cover1.jpg': (context) => const Article1(),
+  '/assets/cover2.jpg': (context) => const Article2(),
+  '/assets/cover3.jpg': (context) => const Article3(),
 };
