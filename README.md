@@ -27,3 +27,9 @@ While our local WasteWizard applications are extremely helpful, we noticed a maj
 ## Learn More
 
 To read a full log of our production process, or read user documentation, please go to the respective directory. 
+
+## Demo
+
+[![WasteWizard++ Full User DEmo](https://yt-embed.herokuapp.com/embed?v=ATC83hcUPBA](https://www.youtube.com/watch?v=ATC83hcUPBA&ab_channel=131216)
+
+
