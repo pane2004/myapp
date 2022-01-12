@@ -30,6 +30,6 @@ To read a full log of our production process, or read user documentation, please
 
 ## Demo
 
-[![WasteWizard++ Full User DEmo](https://yt-embed.herokuapp.com/embed?v=ATC83hcUPBA](https://www.youtube.com/watch?v=ATC83hcUPBA&ab_channel=131216)
+[![WasteWizard++ Full User DEmo][https://yt-embed.herokuapp.com/embed?v=ATC83hcUPBA](https://www.youtube.com/watch?v=ATC83hcUPBA&ab_channel=131216)
 
 
