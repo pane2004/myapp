@@ -36,6 +36,6 @@ To read a full log of our production process, or read user documentation, please
 
 Due to the nature of our application, we have created an in depth demo of all functions in case no android device can be used to test the program. 
 
-[![WasteWizard++ Full User DEmo](https://yt-embed.herokuapp.com/embed?v=ATC83hcUPBA)](https://www.youtube.com/watch?v=ATC83hcUPBA&ab_channel=131216)
+[![WasteWizard++ Full User DEmo](https://yt-embed.herokuapp.com/embed?v=yNw7NB4Ar8I)](https://www.youtube.com/watch?v=yNw7NB4Ar8I)
 
 
