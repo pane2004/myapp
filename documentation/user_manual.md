@@ -9,7 +9,7 @@ To sign in to our application, you have 3 options:
 
 ## Bottom Navbar
 
-![](https://i.ibb.co/xMMbpkQ/Screenshot-1751.png)
+![](https://i.ibb.co/Mnz1q54/Screenshot-1753.png)
 
 1. Home: Home page of the application, where you can click on some interesting articles, use our 3 additional tools, and view your scan history
 
@@ -41,7 +41,7 @@ On the side drawer, there is a variety of pages you can navigate to.
 
 ## Tools
 
-![](https://i.ibb.co/Mnz1q54/Screenshot-1753.png)
+![](https://i.ibb.co/xMMbpkQ/Screenshot-1751.png)
 
 In addition to our main scanning function, we also have a suite of informational tools to help you take further action!
 
