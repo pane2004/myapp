@@ -28,7 +28,13 @@ While our local WasteWizard applications are extremely helpful, we noticed a maj
 
 To read a full log of our production process, or read user documentation, please go to the respective directory. 
 
-## Demo
+## Problems
+
+- IOS: The application theoretically works in IOS, but we are unable to test it due to the constraint of not owning a macOS device. 
+
+## Application Demo
+
+Due to the nature of our application, we have created an in depth demo of all functions in case no android device can be used to test the program. 
 
 [![WasteWizard++ Full User DEmo](https://yt-embed.herokuapp.com/embed?v=ATC83hcUPBA)](https://www.youtube.com/watch?v=ATC83hcUPBA&ab_channel=131216)
 
