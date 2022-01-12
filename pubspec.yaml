@@ -63,3 +63,6 @@ flutter:
     - assets/cover3.jpg
     - assets/labels.txt
     - assets/model.tflite
+    - assets/onboarding1.png
+    - assets/onboarding2.png
+    - assets/onboarding3.png

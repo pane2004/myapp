@@ -10,9 +10,9 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 final List<String> imgList = [
-  "https://i.ibb.co/yS72sMC/Service.png",
-  "https://i.ibb.co/M9hKsXN/Shopping.png",
-  "https://i.ibb.co/6DtrprR/Support.png",
+  "assets/onboarding1.png",
+  "assets/onboarding2.png",
+  "assets/onboarding3.png",
 ];
 
 final List<Widget> imageSliders = imgList
@@ -22,7 +22,7 @@ final List<Widget> imageSliders = imgList
               borderRadius: const BorderRadius.all(Radius.circular(12.0)),
               child: Stack(
                 children: <Widget>[
-                  Image.network(
+                  Image.asset(
                     item,
                     fit: BoxFit.cover,
                     width: 1000.0,

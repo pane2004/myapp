@@ -298,46 +298,52 @@ class TopicScreen extends StatelessWidget {
             ),
           ),
         ),
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: generateIcon(output),
-              ),
-              Text(
-                output,
-                style: const TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: generateIcon(output),
                 ),
-              ),
-            ],
+                Text(
+                  output,
+                  style: const TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         Divider(
           height: 50,
         ),
-        Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Padding(
-                padding: EdgeInsets.only(bottom: 15),
-                child: Text(
-                  "Before Disposing, Please Consider:",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+        Padding(
+          padding: const EdgeInsets.only(bottom: 50),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 15),
+                  child: Text(
+                    "Before Disposing, Please Consider:",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
-              ),
-              Text("1. Reusing the item"),
-              Text("2. Donating the item."),
-              Text("3. Selling the item."),
-              Text("4. Reflecting on the waste source."),
-            ],
+                Text("1. Reusing the item"),
+                Text("2. Donating the item."),
+                Text("3. Selling the item."),
+                Text("4. Reflecting on the waste source."),
+              ],
+            ),
           ),
         ),
       ]),
