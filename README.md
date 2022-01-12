@@ -1,7 +1,8 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/pane2004/myapp/badge)](https://www.codefactor.io/repository/github/pane2004/myapp)
 # WasteWizard++
 
-A new Flutter project.
+WasteWizard++ is an intuitive machine-learning powered mobile application compatible with IOS and Android that helps users identify the correct (and environmentally conscious) way of disposing their waste products. 
+
 
 ## Getting Started
 
