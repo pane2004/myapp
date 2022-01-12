@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  firebase_core: 1.8.0
+  firebase_core: 1.10.0
   cloud_firestore: 2.5.0
   firebase_auth: 3.1.4
   google_sign_in: 5.2.0
@@ -35,6 +35,7 @@ dependencies:
   image: ^3.1.0
   tflite_flutter: ^0.9.0
   tflite_flutter_helper: ^0.3.1
+  firebase_storage: ^10.2.5
 
 dev_dependencies:
   flutter_test:

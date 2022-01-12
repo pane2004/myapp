@@ -39,11 +39,12 @@ class AuthService {
                 .collection('users')
                 .doc(newFirebaseUser?.uid)
                 .collection('scans')
-                .add({
+                .doc('999999999999999999999999')
+                .set({
               "img":
                   "https://firebasestorage.googleapis.com/v0/b/projecttest-f77b1.appspot.com/o/icon%20(1).png?alt=media&token=4c6feb3d-a2d2-4b05-8326-cc013a6544f7",
               "classification": "My First Scan",
-              "time": date
+              "time": date,
             });
           });
         }

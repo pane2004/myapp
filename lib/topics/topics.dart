@@ -2,8 +2,10 @@
 
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
+import 'package:path/path.dart';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -79,6 +81,12 @@ class _TopicsScreenState extends State<TopicsScreen> {
 
   Category? category;
 
+  bool isLoading = true;
+
+  UploadTask? task;
+
+  late String urlDownload;
+
   @override
   void initState() {
     super.initState();
@@ -86,7 +94,10 @@ class _TopicsScreenState extends State<TopicsScreen> {
   }
 
   Future getImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 30,
+    );
 
     setState(() {
       _image = File(pickedFile!.path);
@@ -102,6 +113,23 @@ class _TopicsScreenState extends State<TopicsScreen> {
 
     setState(() {
       category = pred;
+    });
+  }
+
+  Future uploadFile() async {
+    if (_image == null) return;
+
+    final fileName = basename(_image!.path);
+    final destination = 'files/$fileName';
+
+    task = FirestoreService.uploadFile(destination, _image!);
+
+    if (task == null) return;
+
+    final snapshot = await task!.whenComplete(() {});
+    var link = await snapshot.ref.getDownloadURL();
+    setState(() {
+      urlDownload = link;
     });
   }
 
@@ -130,23 +158,43 @@ class _TopicsScreenState extends State<TopicsScreen> {
               ///Floating Navbar
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: FloatingActionButton(
-                child: const Icon(Icons.camera_alt_rounded),
-                onPressed: () {
-                  getImage();
-                  _image == null
-                      ? Text("Oof")
-                      : Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => TopicScreen(
-                              //image: _image,
-                              output: category!.label,
-                            ),
-                          ),
-                        );
-                },
-                backgroundColor: const Color(0xFF84C879),
-              ),
+              floatingActionButton: isLoading
+                  ? FloatingActionButton(
+                      child: const Icon(Icons.camera_alt_rounded),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        await getImage();
+                        await uploadFile();
+                        FirestoreService().updateTotal();
+                        await FirestoreService().updateScans(
+                            urlDownload.toString(), category!.label.toString());
+                        setState(() {
+                          isLoading = true;
+                        });
+                        category == null
+                            ? Text("Oof")
+                            : Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      TopicScreen(
+                                    image: _image,
+                                    output: category!.label,
+                                  ),
+                                ),
+                              );
+                      },
+                      backgroundColor: const Color(0xFF84C879),
+                    )
+                  : Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
               bottomNavigationBar: BottomAppBar(
                 shape: const AutomaticNotchedShape(
                     RoundedRectangleBorder(
@@ -218,12 +266,12 @@ class _TopicsScreenState extends State<TopicsScreen> {
 }
 
 class TopicScreen extends StatelessWidget {
-  //final File image;
+  final File? image;
   final String output;
 
   const TopicScreen({
     Key? key,
-    //required this.image,
+    required this.image,
     required this.output,
   }) : super(key: key);
 
@@ -239,18 +287,25 @@ class TopicScreen extends StatelessWidget {
                 bottomRight: Radius.circular(50))),
       ),
       body: ListView(children: [
-        // Hero(
-        //   tag: 1,
-        //   child: Image.file(image, width: MediaQuery.of(context).size.width),
-        // ),
+        Hero(
+          tag: 1,
+          child: AspectRatio(
+            aspectRatio: 1.5,
+            child: Image.file(
+              image!,
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width,
+            ),
+          ),
+        ),
         Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.only(right: 10),
-              //   child: generateIcon('${output[0]['label']}'),
-              // ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: generateIcon(output),
+              ),
               Text(
                 output,
                 style: const TextStyle(
@@ -351,32 +406,52 @@ class ScanHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Padding(
-        padding: EdgeInsets.only(left: 25, top: 10),
-        child: Text(
-          "Scan History",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-        ),
-      ),
-      GridView.count(
-        mainAxisSpacing: 10,
-        childAspectRatio: 4,
-        shrinkWrap: true,
-        primary: false,
-        padding: const EdgeInsets.all(20),
-        crossAxisCount: 1,
-        children: scans
-            .map((scan) => TopicItem(
-                  scan: scan,
-                ))
-            .toList(),
-      ),
-    ]));
+    return SliverToBoxAdapter(child: buildHistory());
+  }
+
+  FutureBuilder<List<Scan>> buildHistory() {
+    return FutureBuilder<List<Scan>>(
+        future: FirestoreService().getScans(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingScreen();
+          } else if (snapshot.hasError) {
+            return Center(
+              child: ErrorMessage(message: snapshot.error.toString()),
+            );
+          } else if (snapshot.hasData) {
+            var name = snapshot.data!;
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 25, top: 10),
+                    child: Text(
+                      "Scan History",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  GridView.count(
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 4,
+                    shrinkWrap: true,
+                    primary: false,
+                    padding: const EdgeInsets.all(20),
+                    crossAxisCount: 1,
+                    children: name
+                        .map((scan) => TopicItem(
+                              scan: scan,
+                            ))
+                        .toList(),
+                  ),
+                ]);
+          } else {
+            return const Text('No topics in Firestore. Check Database');
+          }
+        });
   }
 }
 

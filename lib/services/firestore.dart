@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:myapp/services/auth.dart';
 import 'package:myapp/services/models.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -60,6 +63,44 @@ class FirestoreService {
   ///Updates Users Carbon Amount
   resetCarbon() {
     _db.collection('users').doc(firebaseUser!.uid).update({"carbon": 0});
+  }
+
+  ///Adds user totals for scans
+  updateTotal() {
+    _db.collection('users').doc(firebaseUser!.uid).update({
+      "carbon": FieldValue.increment(0.35),
+      "scanCount": FieldValue.increment(1),
+    });
+  }
+
+  ///Updates Users Scans Name
+  updateScans(String img, String classification) async {
+    DateTime today = DateTime.now();
+    String date = today.toString().substring(0, 10);
+
+    var countSnapshot =
+        await _db.collection('users').doc(firebaseUser!.uid).get();
+
+    _db
+        .collection('users')
+        .doc(firebaseUser!.uid)
+        .collection('scans')
+        .doc(countSnapshot.data()!["scanCount"].toString())
+        .set({
+      "img": img,
+      "classification": classification,
+      "time": date,
+    });
+  }
+
+  static UploadTask? uploadFile(String destination, File file) {
+    try {
+      final ref = FirebaseStorage.instance.ref(destination);
+
+      return ref.putFile(file);
+    } on FirebaseException catch (e) {
+      return null;
+    }
   }
 
   /// Reads all documments from the topics collection
