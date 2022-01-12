@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:myapp/services/models.dart';
-import 'package:myapp/shared/bottom_nav.dart';
 
 class TopicItem extends StatelessWidget {
   final Scan scan;

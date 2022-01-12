@@ -1,6 +1,12 @@
-// ignore_for_file: unnecessary_const
+// ignore_for_file: unnecessary_const, prefer_const_constructors
+
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
+import 'package:image/image.dart' as img;
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myapp/services/firestore.dart';
 import 'package:myapp/services/models.dart';
 import 'package:myapp/shared/bottom_nav.dart';
@@ -11,6 +17,10 @@ import 'package:myapp/topics/topic_item.dart';
 import 'package:myapp/topics/tool_item.dart';
 import 'package:myapp/topics/drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
+import 'package:myapp/topics/classifier.dart';
+import 'package:myapp/topics/classifier_quant.dart';
 
 final List<String> imgList = [
   "assets/cover1.jpg",
@@ -58,6 +68,43 @@ class TopicsScreen extends StatefulWidget {
 
 class _TopicsScreenState extends State<TopicsScreen> {
   int _selectedIndex = 0;
+  late Classifier _classifier;
+
+  File? _image;
+  final picker = ImagePicker();
+
+  Image? _imageWidget;
+
+  img.Image? fox;
+
+  Category? category;
+
+  @override
+  void initState() {
+    super.initState();
+    _classifier = ClassifierQuant();
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = File(pickedFile!.path);
+      _imageWidget = Image.file(_image!);
+
+      _predict();
+    });
+  }
+
+  void _predict() async {
+    img.Image imageInput = img.decodeImage(_image!.readAsBytesSync())!;
+    var pred = _classifier.predict(imageInput);
+
+    setState(() {
+      category = pred;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Scan>>(
@@ -85,7 +132,19 @@ class _TopicsScreenState extends State<TopicsScreen> {
                   FloatingActionButtonLocation.centerDocked,
               floatingActionButton: FloatingActionButton(
                 child: const Icon(Icons.camera_alt_rounded),
-                onPressed: () {},
+                onPressed: () {
+                  getImage();
+                  _image == null
+                      ? Text("Oof")
+                      : Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => TopicScreen(
+                              //image: _image,
+                              output: category!.label,
+                            ),
+                          ),
+                        );
+                },
                 backgroundColor: const Color(0xFF84C879),
               ),
               bottomNavigationBar: BottomAppBar(
@@ -155,6 +214,110 @@ class _TopicsScreenState extends State<TopicsScreen> {
             return const Text('No topics in Firestore. Check Database');
           }
         });
+  }
+}
+
+class TopicScreen extends StatelessWidget {
+  //final File image;
+  final String output;
+
+  const TopicScreen({
+    Key? key,
+    //required this.image,
+    required this.output,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF84C879),
+        title: Text(output),
+        shape: const ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(50),
+                bottomRight: Radius.circular(50))),
+      ),
+      body: ListView(children: [
+        // Hero(
+        //   tag: 1,
+        //   child: Image.file(image, width: MediaQuery.of(context).size.width),
+        // ),
+        Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Padding(
+              //   padding: const EdgeInsets.only(right: 10),
+              //   child: generateIcon('${output[0]['label']}'),
+              // ),
+              Text(
+                output,
+                style: const TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Divider(
+          height: 50,
+        ),
+        Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Padding(
+                padding: EdgeInsets.only(bottom: 15),
+                child: Text(
+                  "Before Disposing, Please Consider:",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              Text("1. Reusing the item"),
+              Text("2. Donating the item."),
+              Text("3. Selling the item."),
+              Text("4. Reflecting on the waste source."),
+            ],
+          ),
+        ),
+      ]),
+    );
+  }
+
+  generateIcon(String classification) {
+    var icon = classification;
+    switch (icon) {
+      case 'Recycling':
+        return Icon(
+          FontAwesomeIcons.recycle,
+          color: Color(0xFF4188D6),
+        );
+      case 'Garbage':
+        return Icon(
+          FontAwesomeIcons.trash,
+          color: Color(0xFFFFC92B),
+        );
+      case 'Compost':
+        return Icon(
+          FontAwesomeIcons.leaf,
+          color: Color(0xFF9ED593),
+        );
+      case 'Hazardous Waste':
+        return Icon(
+          FontAwesomeIcons.exclamation,
+          color: Colors.red,
+        );
+      default:
+        return Icon(
+          FontAwesomeIcons.leaf,
+          color: Color(0xFF9ED593),
+        );
+    }
   }
 }
 

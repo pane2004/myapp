@@ -48,5 +48,11 @@
 	<string>https</string>
 	<string>http</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+    <string>Need Camera Access</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Need Microphone Access</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need Gallery Accesss</string>
 </dict>
 </plist>
