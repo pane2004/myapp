@@ -1,3 +1,4 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/pane2004/myapp/badge)](https://www.codefactor.io/repository/github/pane2004/myapp)
 # WasteWizard++
 
 A new Flutter project.
